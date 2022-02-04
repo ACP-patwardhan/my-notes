@@ -5,7 +5,7 @@ connectToMongo();
 //basic express server
 const express = require('express')
 const app = express()
-const port = 3000
+const port = 5000
 app.use(express.json()) //to use request.body
 app.get('/', (req, res) => {
   res.send('Hello World!')
