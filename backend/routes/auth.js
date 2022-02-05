@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../database/models/User');
 const { body, validationResult } = require('express-validator');
-
+const bcrypt = require('bcrypt');
 // Create User : POST '/api/auth/createUser'
 router.post('/createUser/',
     body('email', 'Enter a valid Email').isEmail(),
@@ -22,10 +22,12 @@ router.post('/createUser/',
                 res.status(400).json({ error: 'User with this email already exists' });
                 return;
             }
+            //encrypt password using brcrypt hash
+            const hash_password = await bcrypt.hash(req.body.password,10);
             let user = await User.create({
                 name: req.body.name,
                 email: req.body.email,
-                password: req.body.password,
+                password: hash_password,
             })
             res.send(user);
 
