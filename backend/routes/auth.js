@@ -5,6 +5,8 @@ const User = require('../database/models/User');
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const {jwtSecret} = require('../constants/secrets');
+const getUser = require('../middleware/getuser')
 
 // Create User : POST '/api/auth/createUser'
 router.post('/createUser',
@@ -36,7 +38,7 @@ router.post('/createUser',
                     id: user.id
                 }
             }
-            const authToken = jwt.sign(tokenPayload, 'secreteStringisGod');
+            const authToken = jwt.sign(tokenPayload, jwtSecret);
             res.json({ authToken });
 
         } catch (error) {
@@ -84,4 +86,20 @@ router.post('/login',
         }
 
     })
+
+// getUser : POST '/api/auth/getUser' get user details post login
+router.post('/getUser',
+getUser,
+async (req, res) => {
+    try {
+        //check unique email.
+        const user = await User.findById(req.user.id).select("-password");
+        res.json({ user });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' })
+    }
+
+})
 module.exports = router;
