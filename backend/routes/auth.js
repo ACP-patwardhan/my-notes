@@ -4,6 +4,7 @@ const router = express.Router();
 const User = require('../database/models/User');
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 // Create User : POST '/api/auth/createUser'
 router.post('/createUser/',
     body('email', 'Enter a valid Email').isEmail(),
@@ -29,7 +30,14 @@ router.post('/createUser/',
                 email: req.body.email,
                 password: hash_password,
             })
-            res.send(user);
+            //generate auth token.
+            const tokenPayload = {
+                user:{
+                    id: user.id
+                }
+            }
+            const authToken = jwt.sign(tokenPayload,'secreteStringisGod');
+            res.json({authToken});
 
         } catch (error) {
             console.error(error);
