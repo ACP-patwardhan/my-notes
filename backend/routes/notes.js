@@ -19,7 +19,7 @@ router.post('/addNote',
         }
         try {
             let note = await Notes.create({
-                user:req.user.id,
+                user: req.user.id,
                 title: req.body.title,
                 description: req.body.description,
                 tag: req.body.tag
@@ -32,4 +32,11 @@ router.post('/addNote',
     }
 )
 
+//fetch all notes of a user. /api/notes/fetchAll fetched all notes of a user post login
+router.get('/fetchAll',
+    getUser,
+    async (req, res) => {
+        const notes = await Notes.find({user:req.user.id});
+        res.json(notes);
+    })
 module.exports = router;
