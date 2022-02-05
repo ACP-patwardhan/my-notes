@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken');
 const {jwtSecret} = require('../constants/secrets');
 const getUser = require('../middleware/getuser')
 
-// Create User : POST '/api/auth/createUser'
+// Create User : POST '/api/auth/createUser' login not required
 router.post('/createUser',
     body('email', 'Enter a valid Email').isEmail(),
     body('password', 'Password must be atleast 5 characters').isLength({ min: 5 }),
@@ -48,7 +48,7 @@ router.post('/createUser',
 
     })
 
-// login : POST '/api/auth/login'
+// login : POST '/api/auth/login' . login not required
 router.post('/login',
     body('email', 'Enter a valid Email').isEmail(),
     body('password', 'Password required').exists(),
