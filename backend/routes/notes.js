@@ -4,7 +4,7 @@ const router = express.Router();
 const Notes = require('../database/models/Notes');
 const { body, validationResult } = require('express-validator');
 const getUser = require('../middleware/getuser')
-
+const verifyUser = require('../middleware/verifyuser');
 // add a note : /api/notes/addNote adds notes to a user post login.
 router.post('/addNote',
     getUser,
@@ -36,7 +36,26 @@ router.post('/addNote',
 router.get('/fetchAll',
     getUser,
     async (req, res) => {
-        const notes = await Notes.find({user:req.user.id});
+        const notes = await Notes.find({ user: req.user.id });
         res.json(notes);
     })
+//update a note of a user. /api/notes/update:id updates a note of a user post login
+router.put('/update/:id',
+    getUser,
+    verifyUser,
+    async (req, res) => {
+        try {
+            const { title, description, tag } = req.body;
+            const newNote = {};
+            if (title) newNote.title = title;
+            if (description) newNote.description = description;
+            if (tag) newNote.tag = tag;
+            const note = await Notes.findByIdAndUpdate(req.params.id, { $set: newNote }, { new: true })
+            res.json(note);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Internal server error' })
+        }
+    })
+
 module.exports = router;
