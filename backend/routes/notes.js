@@ -39,7 +39,7 @@ router.get('/fetchAll',
         const notes = await Notes.find({ user: req.user.id });
         res.json(notes);
     })
-//update a note of a user. /api/notes/update:id updates a note of a user post login
+//update a note of a user. /api/notes/update/:id updates a note of a user post login
 router.put('/update/:id',
     getUser,
     verifyUser,
@@ -57,5 +57,17 @@ router.put('/update/:id',
             res.status(500).json({ error: 'Internal server error' })
         }
     })
-
+// delete a note of a user. /api/notes/delete/:id deletes the note from db post login
+router.delete('/delete/:id',
+    getUser,
+    verifyUser,
+    async (req, res) => {
+        try {
+            const note = await Notes.findByIdAndDelete(req.params.id);
+            res.json({message:"successfully deleted the note",note});
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Internal server error' })
+        }
+    })
 module.exports = router;
