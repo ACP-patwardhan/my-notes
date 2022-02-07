@@ -1,0 +1,19 @@
+.navbar{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: #f0f0f0;
+    color: #3f413e;
+}
+.navbar a{
+    color: #3f413e;
+    text-decoration: none;
+}
+
+.leftNav{
+    display: flex;
+    justify-content: space-between;
+    width: 10vw;
+}
