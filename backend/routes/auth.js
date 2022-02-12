@@ -15,15 +15,16 @@ router.post('/createUser',
     async (req, res) => {
         //catch validation errors if any
         const errors = validationResult(req);
+        let success =false;
         if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
+            return res.status(400).json({success, errors: errors.array() });
         }
 
         try {
             //check unique email.
             const emailExists = await User.findOne({ email: req.body.email });
             if (emailExists) {
-                return res.status(400).json({ error: 'User with this email already exists' });
+                return res.status(400).json({success, error: 'User with this email already exists' });
             }
             //encrypt password using brcrypt hash
             const hash_password = await bcrypt.hash(req.body.password, 10);
@@ -39,11 +40,12 @@ router.post('/createUser',
                 }
             }
             const authToken = jwt.sign(tokenPayload, jwtSecret);
-            res.json({ authToken });
+            success=true;
+            res.json({success, authToken });
 
         } catch (error) {
             console.error(error);
-            res.status(500).json({ error: 'Internal server error' })
+            res.status(500).json({success, error: 'Internal server error' })
         }
 
     })
