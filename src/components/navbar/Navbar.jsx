@@ -17,12 +17,12 @@ function Navbar() {
     return (
         <div className={styles.navbar}>
             <div className={styles.leftNav}>
-                <button className={classNameAdder(styles.btn,styles.stdColor)} onClick={()=>handleNavigation("/")}>Home</button>
+                {login && <button className={classNameAdder(styles.btn,styles.stdColor)} onClick={()=>handleNavigation("/")}>Home</button>}
                 <button className={classNameAdder(styles.btn,styles.stdColor)} onClick={()=>handleNavigation("/about")}>About</button>
             </div>
             <div className={styles.rightNav}>
                 {!login && <button className={classNameAdder(styles.btn,styles.loginColor)} onClick={()=>handleNavigation("/signup")}>Signup</button>}
-                {login?<button className={classNameAdder(styles.btn,styles.logoutColor)} onClick={handleLogout}>Logout</button>: <button className={classNameAdder(styles.btn,styles.loginColor)}>Login</button>}
+                {login?<button className={classNameAdder(styles.btn,styles.logoutColor)} onClick={handleLogout}>Logout</button>: <button onClick={()=>handleNavigation("/login")} className={classNameAdder(styles.btn,styles.loginColor)}>Login</button>}
             </div>
         </div>
     );

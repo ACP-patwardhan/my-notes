@@ -56,9 +56,10 @@ router.post('/login',
     body('password', 'Password required').exists(),
     async (req, res) => {
         //catch validation errors if any
+        let success = false;
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
+            return res.status(400).json({ success,errors: errors.array() });
         }
 
         
@@ -66,12 +67,12 @@ router.post('/login',
             //check unique email.
             const user = await User.findOne({ email: req.body.email });
             if (!user) {
-                return res.status(400).json({ error: 'Invalid credentials' });
+                return res.status(400).json({ success,error: 'Invalid credentials' });
             }
             //encrypt password using brcrypt hash
             const checkPassword = await bcrypt.compare(req.body.password,user.password)
             if(!checkPassword){
-                return res.status(400).json({ error: 'Invalid credentials' });
+                return res.status(400).json({ success,error: 'Invalid credentials' });
             }
             //generate auth token.
             const tokenPayload = {
@@ -79,12 +80,13 @@ router.post('/login',
                     id: user.id
                 }
             }
-            const authToken = jwt.sign(tokenPayload, 'secreteStringisGod');
-            res.json({ authToken });
+            const authToken = jwt.sign(tokenPayload, jwtSecret);
+            success = true;
+            res.json({ success, authToken });
 
         } catch (error) {
             console.error(error);
-            res.status(500).json({ error: 'Internal server error' })
+            res.status(500).json({ success, error: 'Internal server error' })
         }
 
     })
