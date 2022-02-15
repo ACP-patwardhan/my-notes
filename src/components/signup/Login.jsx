@@ -44,7 +44,7 @@ function Login() {
     }
     const errorText = getErrorText();
     let btnClass = styles.btn;
-    if (isDisabled()) btnClass += ' disabled';
+    if (isDisabled()) btnClass = styles.disabled;
     return (
         <div className={styles.signupContainer}>
             <h1>Welcome to My Notes</h1>

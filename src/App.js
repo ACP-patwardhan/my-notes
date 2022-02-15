@@ -4,6 +4,7 @@ import React from "react"; import {
   Route
 } from "react-router-dom";
 import LoginState from "./contexts/login/LoginState";
+import NotesState from "./contexts/notes/NotesState";
 import Navbar from "./components/navbar/Navbar";
 import Home from './components/home/Home';
 import About from './components/about/About';
@@ -13,6 +14,7 @@ function App() {
   return (
     <div>
       <LoginState>
+        <NotesState>
         <Router>
         <Navbar />
           <Routes>
@@ -22,6 +24,7 @@ function App() {
             <Route exact path="/login" element={<Login />} />
           </Routes>
         </Router>
+        </NotesState>
       </LoginState>
     </div>
   );
