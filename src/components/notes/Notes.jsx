@@ -56,7 +56,7 @@ function Notes() {
                 You don't have any notes currently .
                 add a note !
             </div> :
-                <div>
+                <div className={styles.notesect}>
                     {
                         notes.map((note,key) => {
                             return <NoteTile key={key} note={note} />
