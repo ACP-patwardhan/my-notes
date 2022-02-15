@@ -64,12 +64,14 @@ router.delete('/delete/:id',
     getUser,
     verifyUser,
     async (req, res) => {
+        let success = false;
         try {
             const note = await Notes.findByIdAndDelete(req.params.id);
-            res.json({message:"successfully deleted the note",note});
+            success=true;
+            res.json({success,note});
         } catch (error) {
             console.error(error);
-            res.status(500).json({ error: 'Internal server error' })
+            res.status(500).json({success, error: 'Internal server error' })
         }
     })
 module.exports = router;

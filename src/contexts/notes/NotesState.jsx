@@ -17,16 +17,16 @@ function NotesState(props) {
         'auth-token': authToken
       },
     });
-  let fetchedNotes = await notesResponse.json();
-  console.log(fetchedNotes);
-  setNotes(...notes,fetchedNotes)
+    let fetchedNotes = await notesResponse.json();
+    console.log(fetchedNotes);
+    setNotes(...notes, fetchedNotes)
   }
-  
+
   //setsNotes for UI if notes are added to DB.
   const addNote = async (title, description, tag) => {
     const url = host + endpoints.addANote;
     const authToken = localStorage.getItem('authToken');
-    const data = {title, description, tag};
+    const data = { title, description, tag };
     const notesResponse = await fetch(url, {
       method: 'POST',
       headers: {
@@ -35,14 +35,34 @@ function NotesState(props) {
       },
       body: JSON.stringify(data)
     });
-    const {success,note} = await notesResponse.json();
-    if(success){
+    const { success, note } = await notesResponse.json();
+    if (success) {
       setNotes(notes.concat(note));
-      console.log('successfully added ',note);
+      console.log('successfully added ', note);
+    }
+  }
+  //delete notes 
+  const deleteNote = async (id) => {
+    const url = host + endpoints.deleteNote + `/${id}`;
+    const authToken = localStorage.getItem('authToken');
+    const notesResponse = await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'auth-token': authToken
+      },
+    });
+    const { success, note } = await notesResponse.json();
+    if (success) {
+      const newnotes = notes.filter(note=>{
+        return note._id!==id;
+      })
+      setNotes(newnotes);
+      console.log('successfully deleted ', note);
     }
   }
   return (
-    <NotesContext.Provider value={{ notes, addNote,getAllNotes }}>
+    <NotesContext.Provider value={{ notes, addNote, getAllNotes, deleteNote }}>
       {props.children}
     </NotesContext.Provider>
   )
