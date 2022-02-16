@@ -46,6 +46,7 @@ router.put('/update/:id',
     getUser,
     verifyUser,
     async (req, res) => {
+        let success = false;
         try {
             const { title, description, tag } = req.body;
             const newNote = {};
@@ -53,10 +54,11 @@ router.put('/update/:id',
             if (description) newNote.description = description;
             if (tag) newNote.tag = tag;
             const note = await Notes.findByIdAndUpdate(req.params.id, { $set: newNote }, { new: true })
-            res.json(note);
+            success = true;
+            res.json({success,note});
         } catch (error) {
             console.error(error);
-            res.status(500).json({ error: 'Internal server error' })
+            res.status(500).json({ success, error: 'Internal server error' })
         }
     })
 // delete a note of a user. /api/notes/delete/:id deletes the note from db post login

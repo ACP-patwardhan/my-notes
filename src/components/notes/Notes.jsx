@@ -8,7 +8,7 @@ function Notes() {
     const [newNote, setNewNote] = useState({ title: "", description: "", tag: "" })
     const notesState = useContext(NotesContext);
 
-    const { notes, addNote, getAllNotes, deleteNote } = notesState;
+    const { notes, addNote, getAllNotes, deleteNote, updateNote } = notesState;
     useEffect(() => {
         getAllNotes();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -59,7 +59,7 @@ function Notes() {
                 <div className={styles.notesect}>
                     {
                         notes.map((note,key) => {
-                            return <NoteTile key={key} note={note} deleteNote={deleteNote}/>
+                            return <NoteTile key={key} note={note} deleteNote={deleteNote} updateNote={updateNote}/>
                         })
                     }
                 </div>

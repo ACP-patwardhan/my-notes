@@ -61,8 +61,33 @@ function NotesState(props) {
       console.log('successfully deleted ', note);
     }
   }
+  //update notes 
+  const updateNote = async (title, description, tag, id) => {
+    const url = host + endpoints.updateNote + `/${id}`;
+    const data = { title, description, tag };
+    const authToken = localStorage.getItem('authToken');
+    const notesResponse = await fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'auth-token': authToken
+      },
+      body: JSON.stringify(data)
+    });
+    const { success, note } = await notesResponse.json();
+    if (success) {
+      const newNotes = notes.map((ele)=>{
+        if(ele._id === id){
+          return note;
+        }
+        else return ele;
+      })
+      setNotes(newNotes);
+      console.log('successfully updated ', note);
+    }
+  }
   return (
-    <NotesContext.Provider value={{ notes, addNote, getAllNotes, deleteNote }}>
+    <NotesContext.Provider value={{ notes, addNote, getAllNotes, deleteNote, updateNote }}>
       {props.children}
     </NotesContext.Provider>
   )

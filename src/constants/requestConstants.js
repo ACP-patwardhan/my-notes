@@ -5,4 +5,5 @@ export const endpoints = {
     fetchAllNotes: '/api/notes/fetchAll',
     addANote:'/api/notes/addNote',
     deleteNote: '/api/notes/delete', //add note id after slash
+    updateNote: '/api/notes/update', //add note id after slash
 }
