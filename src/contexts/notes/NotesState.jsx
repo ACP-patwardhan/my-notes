@@ -19,7 +19,7 @@ function NotesState(props) {
     });
     let fetchedNotes = await notesResponse.json();
     console.log(fetchedNotes);
-    setNotes(...notes, fetchedNotes)
+    setNotes(fetchedNotes)
   }
 
   //setsNotes for UI if notes are added to DB.

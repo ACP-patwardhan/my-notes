@@ -2,6 +2,7 @@ export const host = 'http://localhost:5000';
 export const endpoints = {
     createUser : '/api/auth/createUser',
     login: '/api/auth/login',
+    getUser: '/api/auth/getUser',
     fetchAllNotes: '/api/notes/fetchAll',
     addANote:'/api/notes/addNote',
     deleteNote: '/api/notes/delete', //add note id after slash

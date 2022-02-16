@@ -9,12 +9,18 @@ function Home() {
         loginState.updateLoginState(loggedIn)
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    
+    const {user,getUser} = loginState;
+    useEffect(()=>{
+        getUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[])
     const login = loginState.login;
+
     return (
         <div className={styles.container}>
             {login ?
                 <div>
+                    <h1>Welcome {user.name}</h1>
                     <Notes/>
                 </div>
                 : 

@@ -1,7 +1,7 @@
 import formStyles from '../signup/signup.module.css';
 import styles from './notes.module.css';
 import React, { useState, useContext, useEffect } from 'react';
-import { isEmpty } from 'lodash';
+import { isEmpty,isFunction } from 'lodash';
 import { NotesContext } from '../../contexts/notes/NotesState'
 import NoteTile from './NoteTile';
 function Notes() {
@@ -52,7 +52,7 @@ function Notes() {
                     <button type="submit" className={btnClass} disabled={isDisabled()}>Submit</button>
                 </form>
             </div>
-            {isEmpty(notes) ? <div>
+            {isEmpty(notes) || !isFunction(notes.map) ? <div>
                 You don't have any notes currently .
                 add a note !
             </div> :
